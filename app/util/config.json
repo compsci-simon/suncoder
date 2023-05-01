@@ -1,0 +1,8 @@
+[
+  {
+    "name": "Python",
+    "extension": ".py",
+    "image": "python:3.9-slim",
+    "command": ""
+  }
+]

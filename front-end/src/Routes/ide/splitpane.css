@@ -1,0 +1,41 @@
+/* .vertical-split-pane {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.horizontal-split-pane {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+}
+
+.split-pane-top,
+.split-pane-bottom,
+.split-pane-left,
+.split-pane-right {
+  flex: 1;
+}
+
+.split-pane-top {
+  overflow: hidden;
+}
+
+.horizontal-seperator {
+  border-bottom: 2px solid rgb(123, 144, 202);
+  border-top: 4px solid transparent;
+  cursor: row-resize;
+}
+
+.vertical-seperator {
+  border-left: 2px solid rgb(123, 144, 202);
+  border-right: 4px solid transparent;
+  cursor: col-resize;
+}
+
+.vertical-seperator:hover, .vertical-seperator:active, .horizontal-seperator:hover, .horizontal-seperator:active {
+  border-color: rgb(153, 153, 153);
+  transition: 0.2s ease-in-out;
+} */

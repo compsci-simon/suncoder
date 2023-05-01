@@ -1,0 +1,31 @@
+.menu-item {
+  height: 60px;
+  display: flex;
+  align-items: center;
+}
+
+.split {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+.gutter:hover {
+  background-color: rgba(0, 26, 122, 0.612);
+  transition: ease-in-out 0.2s;
+}
+
+.gutter:active {
+  background-color: rgba(0, 26, 122, 0.612);
+  transition: ease-in-out 0.2s;
+}
+
+.gutter.gutter-vertical {
+  cursor: row-resize;
+  border-bottom: 2px solid rgba(0, 26, 122, 0.612);
+}
+
+.gutter.gutter-horizontal {
+  cursor: col-resize;
+  border-right: 2px solid rgba(0, 26, 122, 0.612);
+}

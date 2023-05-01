@@ -1,0 +1,17 @@
+body {
+    background-color: rgb(240, 240, 240);
+    height: 100vh;
+}
+
+*:focus {
+    outline: none !important;
+}
+
+.overflow-box {
+    overflow: hidden;
+    transition: 0.2s ease-in-out;
+}
+
+.overflow-box:hover {
+    overflow: auto;
+}

@@ -1,0 +1,13 @@
+.output {
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
+}
+
+.text-error {
+  color: red;
+}
+
+.text-success {
+  color: green;
+}

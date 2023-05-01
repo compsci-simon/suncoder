@@ -1,0 +1,27 @@
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: mysql-pv-volume
+#   namespace: app1
+#   labels:
+#     type: local
+# spec:
+#   storageClassName: longhorn
+#   capacity:
+#     storage: 1Gi
+#   accessModes:
+#     - ReadWriteOnce
+#   persistentVolumeReclaimPolicy: Retain
+# ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+  namespace: app1
+spec:
+  storageClassName: longhorn
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

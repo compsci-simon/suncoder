@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: jserver
+  name: jserver-deployment
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jserver
+  template:
+    metadata:
+      labels:
+        app: jserver
+    spec:
+      containers:
+        - env:
+            - name: JOB_SERVER_PORT
+              value: "1234"
+          image: "simona4220/suncoder-job-server:amd64"
+          imagePullPolicy: Always
+          name: jserver
+          ports:
+            - containerPort: 1234
+          resources:
+            limits:
+              cpu: 512m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jserver-service
+spec:
+  selector:
+    app: jserver
+  ports:
+    - protocol: TCP
+      port: 1234
+      targetPort: 1234
