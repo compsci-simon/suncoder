@@ -7,7 +7,6 @@ declare global {
         _env_: any;
     }
 }
-let token: string | undefined = undefined
 const instance = axios.create({
     baseURL: window._env_ ? window._env_.API_URL : 'http://localhost:8000',
 })

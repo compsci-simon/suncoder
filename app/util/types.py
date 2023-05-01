@@ -1,15 +1,16 @@
+import app.main as main
 from fastapi import Request
 import jwt
 import os
 PROD = os.environ.get('PROD')
-import app.main as main
 
 
 class User:
     def __init__(self, request: Request):
-        token = request.headers.get('Authorization').split(' ')[1]
+        token = request.headers.get('Authorization')
         if not token:
             return None
+        token = token.split(' ')[1]
         decoded = jwt.decode(token, options={"verify_signature": False})
         username = decoded['username']
         user = main.database.get_user(username=username)

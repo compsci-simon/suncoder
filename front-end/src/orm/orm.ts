@@ -161,6 +161,7 @@ const question = (state: RootState, qid: number) => {
   store.dispatch<any>(fetch_table('required_structures'))
   store.dispatch<any>(fetch_table('illegal_structures'))
   store.dispatch<any>(fetch_table('samples'))
+  store.dispatch<any>(fetch_table('user_code'))
 
   if (!session.Question.idExists(qid as never)) return undefined
   let db_question = session.Question.withId(qid as never)
@@ -181,6 +182,10 @@ const questions = (state: RootState) => {
   store.dispatch<any>(fetch_table('questions'))
   store.dispatch<any>(fetch_table('categories'))
   store.dispatch<any>(fetch_table('question_categories'))
+  store.dispatch<any>(fetch_table('user'))
+  store.dispatch<any>(fetch_table('user_code'))
+
+  const id = store.getState().identity.id
 
   let session = orm.session(state.entities)
   let db_questions = session.Question.all().toModelArray()
@@ -189,6 +194,15 @@ const questions = (state: RootState) => {
     let question = _.cloneDeep(db_question.ref)
     question.categories = _.cloneDeep(db_question.categories.toRefArray())
     question.creator = _.cloneDeep(db_question.creator.ref)
+    let attempts = 0
+    for (let uc of db_question.user_code.all().toRefArray()) {
+      let user = session.User.withId(uc.user_id as never)
+      if (user.username == 'demo' && user.id != id) {
+        continue
+      }
+      attempts += 1
+    }
+    question['attempts'] = attempts
     questions.push(question)
   }
   return questions
@@ -592,8 +606,10 @@ const code_run_instance = (state: RootState, code_run_id: string) => {
 }
 
 const user_attempts_for_question = (state: RootState, question_id: string) => {
-  store.dispatch<any>(fetch_question_user_attempts(question_id))
   let session = orm.session(state.entities)
+  store.dispatch<any>(fetch_table('questions'))
+  store.dispatch<any>(fetch_table('user_code'))
+  const id = store.getState().identity.id
   let db_question = session.Question.withId(question_id as never)
   if (db_question && db_question.user_code) {
     let user_codes: any[] = []
@@ -601,6 +617,9 @@ const user_attempts_for_question = (state: RootState, question_id: string) => {
       let user_code = JSON.parse(JSON.stringify(db_user_code.ref))
       user_code['username'] = db_user_code.user_id.ref.username
       user_code['user_id'] = db_user_code.user_id.ref.id
+      if (user_code['username'] == 'demo' && user_code['user_id'] != id) {
+        continue
+      }
       user_codes.push(user_code)
     }
     return user_codes

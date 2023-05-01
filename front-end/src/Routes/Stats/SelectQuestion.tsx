@@ -27,6 +27,10 @@ const SelectQuestion = (props: any) => {
       },
     },
     {
+      field: 'attempts',
+      headerName: 'Attempts',
+    },
+    {
       field: "report",
       headerName: "Report",
       renderCell: (params: any) => {

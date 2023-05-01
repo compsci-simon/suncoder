@@ -185,10 +185,9 @@ def job_status(job_id: str, user: types.User = Depends()):
 @app.post('/api/v1/authenticate')
 def authenticate(credentials: Schemas.Credentials):
     try:
-        import pdb
-        pdb.set_trace()
         if credentials.username == 'demo' and credentials.id:
-            pass
+            identity = database.authenticate_user(
+                credentials.username, credentials.password, credentials.id)
         elif credentials.username == 'demo':
             identity = database.create_demo_user()
         else:

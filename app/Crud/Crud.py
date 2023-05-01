@@ -285,11 +285,15 @@ class Crud:
         except Exception as e:
             return None, str(e)
 
-    def authenticate_user(self, username: str, password: str) -> bool:
+    def authenticate_user(self, username: str, password: str, id: str) -> bool:
         '''When a user attempts to log in, this method is called to authenticate the user'''
         with Session(self.engine) as session:
-            user = session.query(User)\
-                .filter(User.username == username, User.password == password).first()
+            if id:
+                user = session.query(User)\
+                    .filter(User.id == id, User.password == password).first()
+            else:
+                user = session.query(User)\
+                    .filter(User.username == username, User.password == password).first()
             return {'id': user.id, 'username': username, 'type': user.type}
 
     def get_user(self, username: str) -> User:

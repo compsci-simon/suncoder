@@ -1,5 +1,6 @@
+from app.util import types
 from typing import Optional
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 import app.main as main
 router = APIRouter(prefix='/api/v1')
 
@@ -17,8 +18,18 @@ async def create_object(tablename: str, items: list):
 
 
 @router.get('/tables')
-async def get_table(table: str, extra_args=None):
-    return main.database.get_table(table, extra_args)
+async def get_table(table: str, user: types.User = Depends(), extra_args=None):
+    table = main.database.get_table(table, extra_args)
+    newTable = []
+    if user.username == 'demo':
+        for row in table:
+            if hasattr(row, 'username') \
+                    and row.username == 'demo' \
+                    and hasattr(row, 'id') \
+                    and row.id != user.id:
+                continue
+            newTable.append(row)
+    return newTable
 
 
 # -------------------------------- UPDATE -------------------------------------
@@ -26,8 +37,10 @@ async def get_table(table: str, extra_args=None):
 
 # -------------------------------- DELETE -------------------------------------
 @router.delete('/objects')
-async def delete_objects(tablename: str, id_list: list):
+async def delete_objects(tablename: str, id_list: list, user: types.User = Depends()):
     try:
+        if user.username == 'demo':
+            return []
         return main.database.delete_objects(tablename, id_list)
     except Exception as e:
         raise HTTPException(
