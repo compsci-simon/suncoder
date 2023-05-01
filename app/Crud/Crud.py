@@ -128,7 +128,8 @@ class Crud:
                     for structure in question.illegal_structures:
                         db_illegal_structure = session.query(
                             Structure).filter(Structure.name == structure.name).one()
-                        db_question.illegal_structures.append(db_illegal_structure)
+                        db_question.illegal_structures.append(
+                            db_illegal_structure)
 
                     db_question.calls = question.calls
                     db_question.operators = question.operators
@@ -147,11 +148,11 @@ class Crud:
                 print('runtime', runtime)
                 code_run = Code_Run(
                     user_code_id=user_code.id,
-                    cases_passed=cases_passed, 
-                    total_cases=total_cases, 
+                    cases_passed=cases_passed,
+                    total_cases=total_cases,
                     flagged=flagged,
-                    runtime=runtime, 
-                    start_version=start_version, 
+                    runtime=runtime,
+                    start_version=start_version,
                     end_version=end_version
                 )
                 session.add(code_run)
@@ -174,7 +175,8 @@ class Crud:
                         name=prerequisite['name']).one()
                     db_course.prerequisites.append(c)
                 for unit in course.units:
-                    courseUnit = session.query(Unit).filter_by(id=unit['id']).one()
+                    courseUnit = session.query(
+                        Unit).filter_by(id=unit['id']).one()
                     for prereq in unit['prerequisites']:
                         prerequisitesUnit = session.query(
                             Unit).filter_by(id=prereq['id']).one()
@@ -204,7 +206,7 @@ class Crud:
                 db_pools = []
                 for num, pool in enumerate(unit.pools):
                     db_pool = Pool(id=pool['id'], poolnum=num,
-                                unit_id=db_unit.id)
+                                   unit_id=db_unit.id)
                     for question in pool['questions']:
                         q = session.query(Question).filter(
                             Question.id == question['id']).one()
@@ -256,6 +258,16 @@ class Crud:
         except Exception as e:
             return None, str(e)
 
+    def create_demo_user(self):
+        '''Used to create a demo user'''
+        with Session(self.engine) as session:
+            user = User(id=uuid.uuid4().hex,
+                        username='demo',
+                        password='12345678',
+                        type='lecturer')
+            session.add(user)
+            session.commit()
+            return {'id': user.id, 'username': 'demo', 'type': 'lecturer'}
     # ------------------------------------ READ ---------------------------------
 
     def get_table(self, table, extra_args=None) -> Tuple[list, str]:
@@ -263,7 +275,7 @@ class Crud:
         with Session(self.engine) as session:
             if extra_args is not None:
                 return session.query(dynamic_table(table)).filter_by(**extra_args).all()
-            else:    
+            else:
                 return session.query(dynamic_table(table)).all()
 
     def get_user_type(self, id: str) -> Tuple[str, str]:
@@ -278,7 +290,7 @@ class Crud:
         with Session(self.engine) as session:
             user = session.query(User)\
                 .filter(User.username == username, User.password == password).first()
-            return { 'id': user.id, 'username': username, 'type': user.type }
+            return {'id': user.id, 'username': username, 'type': user.type}
 
     def get_user(self, username: str) -> User:
         '''This method is used to get a user given as username. It is used within dependency injection to inject the user and especially the type of user when securing routes'''
@@ -333,7 +345,6 @@ class Crud:
         except Exception as e:
             return None, str(e)
 
-
     def user_code_for_execution(self, question_id: str, user_id: str) -> Tuple[dict, str]:
         with Session(self.engine) as session:
             try:
@@ -364,7 +375,6 @@ class Crud:
                 return user_code, None
             except Exception as e:
                 return None, str(e)
-
 
     def get_user_code_instance(self, user_code_id: str) -> Tuple[dict, str]:
         '''Used to get the a specific instance of user code'''
@@ -418,7 +428,6 @@ class Crud:
         except Exception as e:
             return None, str(e)
 
-
     def get_user_info(self, username: str) -> Tuple[str, str]:
         '''Used to get the user type and id once a user has signed in'''
         try:
@@ -427,7 +436,6 @@ class Crud:
             return user, None
         except Exception as e:
             return None, str(e)
-
 
     def get_question_data(self, question_id: str) -> Tuple[dict, str]:
         '''Used to get the data needed to create a question runner'''
@@ -471,7 +479,6 @@ class Crud:
             except Exception as e:
                 return None, str(e)
 
-
     # ------------------------------------ UPDATE -------------------------------
 
     def update_question(self, question: Schemas.Question) -> Tuple[dict, str]:
@@ -481,7 +488,8 @@ class Crud:
                 question = dict(question)
                 db_question = session.query(
                     Question).filter_by(id=question['id']).one()
-                col_names = list(map(lambda x: x.name, Question.__table__.columns))
+                col_names = list(
+                    map(lambda x: x.name, Question.__table__.columns))
                 for attr in dir(Question):
                     if attr[0] != '_' and attr != 'as_dict':
                         if attr not in col_names and attr in question:
@@ -502,7 +510,6 @@ class Crud:
                 exc_type, exc_obj, exc_tb = sys.exc_info()
                 fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
                 return None, {'fname': fname, 'exc_tb.tb_lineno': exc_tb.tb_lineno, 'error': str(e), 'attr': attr}
-
 
     def update_course(self, course: Schemas.Course) -> Tuple[dict, str]:
         '''Used when updating course information'''
@@ -560,7 +567,7 @@ class Crud:
                 db_pools = []
                 for pool in unit.pools:
                     db_pool = Pool(id=pool['id'], poolnum=pool['poolnum'],
-                                unit_id=unit.id)
+                                   unit_id=unit.id)
                     for question in pool['questions']:
                         q = session.query(Question).filter_by(
                             id=question['id']).one()

@@ -86,7 +86,7 @@ const fastapi = {
         code_runs: (question_id: string): Promise<AxiosResponse<any>> => instance.get(`/api/v1/users/code_runs?question_id=${question_id}`),
         pool_questions: (unit_id: string): Promise<AxiosResponse<any>> => instance.get(`/api/v1/users/unit/pool/questions?unit_id=${unit_id}`),
         get_id: (): Promise<AxiosResponse<any>> => instance.get('/api/v1/users/get_id'),
-        login: (username: string, password: string): Promise<AxiosResponse<any>> => instance.post('/api/v1/authenticate', { username, password }),
+        login: (username: string, password: string, id: string | null): Promise<AxiosResponse<any>> => instance.post('/api/v1/authenticate', { username, password, id }),
         change_password: (password: string): Promise<AxiosResponse<any>> => instance.patch('/api/v1/users/change_password', { password })
     },
     user_code: {

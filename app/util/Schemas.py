@@ -14,10 +14,13 @@ class User(BaseModel):
 class Credentials(BaseModel):
     username: str
     password: str
+    id: Optional[str]
+
 
 class Password(BaseModel):
     password: str
-    
+
+
 class UserCode(BaseModel):
     id: str
     question_id: str

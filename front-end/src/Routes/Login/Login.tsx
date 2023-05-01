@@ -13,16 +13,20 @@ const Login = () => {
       setFailed(true)
     } else {
       localStorage.setItem('token', data.rawJWT)
+      if (data.username == 'demo') {
+        localStorage.setItem('id', data.id)
+      }
       store.dispatch({ type: 'SIGN_IN', payload: data })
     }
   }
 
   const submitHandler = () => {
-
+    const id = localStorage.getItem('id')
     store.dispatch<any>(
       login(
         username,
         password,
+        id,
         afterEffect
       )
     )

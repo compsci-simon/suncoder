@@ -1,4 +1,5 @@
 import time
+import uuid
 from app.util.jwt import createJWT
 import uvicorn
 from fastapi import FastAPI, HTTPException, Depends
@@ -85,7 +86,8 @@ def execute(executionOrder: Schemas.ExecutionOrder, user: types.User = Depends()
     q_data['epsilon'] = 0
     q_data['imports'] = question_data['allowed_imports']
     q_data['required'] = question_data['required_structures']
-    print(f"question_data['illegal_structures'] {question_data['illegal_structures']}")
+    print(
+        f"question_data['illegal_structures'] {question_data['illegal_structures']}")
     q_data['illegal'] = question_data['illegal_structures']
     q_data['test cases'] = []
     for case in question_data['input_outputs']:
@@ -179,15 +181,25 @@ def job_status(job_id: str, user: types.User = Depends()):
         job['results']['cases_failed'] = total
         return job
 
+
 @app.post('/api/v1/authenticate')
 def authenticate(credentials: Schemas.Credentials):
     try:
-        identity = database.authenticate_user(credentials.username, credentials.password)
+        import pdb
+        pdb.set_trace()
+        if credentials.username == 'demo' and credentials.id:
+            pass
+        elif credentials.username == 'demo':
+            identity = database.create_demo_user()
+        else:
+            identity = database.authenticate_user(
+                credentials.username, credentials.password)
         jwt = createJWT(identity)
         identity['rawJWT'] = jwt
         return identity
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 if __name__ == '__main__':
     create_schema()
