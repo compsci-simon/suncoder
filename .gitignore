@@ -36,4 +36,6 @@ suncoder/coverage/
 
 *.pem
 
-deployment
+deployment/
+
+testing/
