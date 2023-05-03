@@ -21,7 +21,7 @@ const Login = () => {
   }
 
   const submitHandler = () => {
-    const id = localStorage.getItem('id')
+    const id = localStorage.getItem('id') ?? ''
     store.dispatch<any>(
       login(
         username,

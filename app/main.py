@@ -44,33 +44,6 @@ app.include_router(router=table.router)
 # --------------------------- custom middleware --------------------------------
 
 
-# @app.middleware('http')
-# async def validate_token(request: Request, call_next):
-#     if request.url.path == '/login' or request.url.path == '/user':
-#         response = await call_next(request)
-#         return response
-#     if request.method != 'OPTIONS':
-#         if 'authorization' not in request.headers:
-#             print('No Authorization header set')
-#             return JSONResponse(status_code=401)
-#         try:
-#             token_validator = crypto.ValidateToken()
-#             claims = token_validator.validate_jwt(
-#                 request.headers['authorization'].split(' ')[1])
-#             if claims is None:
-#                 print('Token is invalid for some reason')
-#                 return JSONResponse(status_code=401)
-#             username = claims['preferred_username'].split('@')[0]
-#             request.state.token_username = username
-#             response = await call_next(request)
-#             return response
-#         except Exception as e:
-#             print(e)
-#             return JSONResponse(status_code=401)
-#     else:
-#         response = await call_next(request)
-#         return response
-
 @app.post("/api/v1/execute_code")
 def execute(executionOrder: Schemas.ExecutionOrder, user: types.User = Depends()):
     start = time.time()
@@ -192,7 +165,7 @@ def authenticate(credentials: Schemas.Credentials):
             identity = database.create_demo_user()
         else:
             identity = database.authenticate_user(
-                credentials.username, credentials.password)
+                credentials.username, credentials.password, credentials.id)
         jwt = createJWT(identity)
         identity['rawJWT'] = jwt
         return identity

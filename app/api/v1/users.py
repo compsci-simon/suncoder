@@ -4,7 +4,6 @@ import app.main as main
 from app.util import Schemas, types
 
 router = APIRouter()
-prod = os.environ.get('PROD')
 
 # -------------------------------- READ ---------------------------------------
 
@@ -15,7 +14,6 @@ async def get_id(user: types.User = Depends()):
         return {'id': user.id, 'type': user.type, 'username': user.username}
     except Exception:
         raise HTTPException(status_code=500, detail='Cannot get username')
-
 
 
 @router.get('/users/unit/pool/questions')

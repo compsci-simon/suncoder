@@ -1,15 +1,15 @@
 import app.main as main
-from fastapi import Request
+from fastapi import HTTPException, Request
 import jwt
 import os
-PROD = os.environ.get('PROD')
 
 
 class User:
     def __init__(self, request: Request):
         token = request.headers.get('Authorization')
         if not token:
-            return None
+            raise HTTPException(
+                status_code=401, detail='Authorization token not set')
         token = token.split(' ')[1]
         decoded = jwt.decode(token, options={"verify_signature": False})
         username = decoded['username']

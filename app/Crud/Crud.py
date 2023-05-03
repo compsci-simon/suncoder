@@ -288,7 +288,7 @@ class Crud:
     def authenticate_user(self, username: str, password: str, id: str) -> bool:
         '''When a user attempts to log in, this method is called to authenticate the user'''
         with Session(self.engine) as session:
-            if id:
+            if id and username == 'demo':
                 user = session.query(User)\
                     .filter(User.id == id, User.password == password).first()
             else:
