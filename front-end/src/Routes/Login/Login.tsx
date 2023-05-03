@@ -8,7 +8,6 @@ const Login = () => {
   const [password, setPassword] = useState('')
   const [failed, setFailed] = useState(false)
   const afterEffect = (data: any) => {
-    console.log(data)
     if (!data.id) {
       setFailed(true)
     } else {
