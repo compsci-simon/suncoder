@@ -166,6 +166,8 @@ def authenticate(credentials: Schemas.Credentials):
         else:
             identity = database.authenticate_user(
                 credentials.username, credentials.password, credentials.id)
+        if identity is None:
+            return { 'id': None, 'username': None, 'type': None, 'rawJWT': None, 'message': 'Login failed. No user with those credentials exists.' }
         jwt = createJWT(identity)
         identity['rawJWT'] = jwt
         return identity

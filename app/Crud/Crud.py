@@ -294,7 +294,9 @@ class Crud:
             else:
                 user = session.query(User)\
                     .filter(User.username == username, User.password == password).first()
-            return {'id': user.id, 'username': username, 'type': user.type}
+            if user:
+                return {'id': user.id, 'username': username, 'type': user.type}
+            
 
     def get_user(self, username: str) -> User:
         '''This method is used to get a user given as username. It is used within dependency injection to inject the user and especially the type of user when securing routes'''
