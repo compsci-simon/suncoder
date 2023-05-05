@@ -12,7 +12,7 @@ import { fetch_user_pool_questions } from '../Routes/UnitQuestions/actions'
 import { fetch_code_run_instance, fetch_question_user_attempts, fetch_user_code_code_runs, fetch_user_code_instance } from '../Routes/Stats/actions'
 import { fetch_table } from '../action'
 import _ from 'lodash'
-import { bin_code_runtimes } from '../helper'
+import { bin_code_runtimes, random_uuid } from '../helper'
 import { create_user_code } from '../Routes/ide/actions'
 
 const orm = new ORM({
@@ -193,6 +193,9 @@ const questions = (state: RootState) => {
   for (let db_question of db_questions) {
     let question = _.cloneDeep(db_question.ref)
     question.categories = _.cloneDeep(db_question.categories.toRefArray())
+    if (!db_question.creator) {
+      continue
+    }
     question.creator = _.cloneDeep(db_question.creator.ref)
     let attempts = 0
     for (let uc of db_question.user_code.all().toRefArray()) {
@@ -541,7 +544,7 @@ let once = (() => {
             return x.question_id == question_id && x.user_id == store.getState().identity.id
           })
           if (user_code.length !== 1) {
-            user_code = { id: crypto.randomUUID().replaceAll('-', ''), source: source, versionId: 0, question_id: question_id, user_id: store.getState().identity.id, changes: [] }
+            user_code = { id: random_uuid(), source: source, versionId: 0, question_id: question_id, user_id: store.getState().identity.id, changes: [] }
             store.dispatch<any>(create_user_code(user_code))
           }
         }

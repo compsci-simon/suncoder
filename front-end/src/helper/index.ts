@@ -78,3 +78,12 @@ export const bin_code_runtimes = (runtimes: number[], num_bins: number) => {
 
   return bins
 }
+
+export const random_uuid = () => {
+  let uuid = ""
+  for (let i = 0; i < 32; i++) {
+    const asciiCode = 97 + Math.floor(Math.random() * 24)
+    uuid += String.fromCharCode(asciiCode)
+  }
+  return uuid
+}
