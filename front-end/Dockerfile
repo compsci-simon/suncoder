@@ -1,4 +1,4 @@
-FROM nginx
+FROM --platform=linux/amd64 nginx
 
 WORKDIR /usr/share/react
 
@@ -10,6 +10,7 @@ WORKDIR /usr/share/nginx/html
 
 COPY .env .
 COPY env.sh .
+COPY default.conf /etc/nginx/conf.d/default.conf
 RUN chmod +x env.sh
 
 CMD ["/bin/bash", "-c", "./env.sh && nginx -g \"daemon off;\""]

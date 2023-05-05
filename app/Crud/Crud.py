@@ -265,8 +265,12 @@ class Crud:
                         username='demo',
                         password='12345678',
                         type='lecturer')
+            for course in session.query(Course).all():
+                if len(course.prerequisites) == 0:
+                    user.enrolled_courses.append(course)
             session.add(user)
             session.commit()
+
             return {'id': user.id, 'username': 'demo', 'type': 'lecturer'}
     # ------------------------------------ READ ---------------------------------
 

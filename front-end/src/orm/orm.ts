@@ -197,7 +197,7 @@ const questions = (state: RootState) => {
     let attempts = 0
     for (let uc of db_question.user_code.all().toRefArray()) {
       let user = session.User.withId(uc.user_id as never)
-      if (user.username == 'demo' && user.id != id) {
+      if (user && user?.username == 'demo' && user.id != id) {
         continue
       }
       attempts += 1
@@ -381,6 +381,7 @@ const completed_courses = (state: RootState) => {
 }
 
 const enrolled_courses = (state: RootState) => {
+  store.dispatch<any>(fetch_table('users'))
   store.dispatch<any>(fetch_table('courses'))
   store.dispatch<any>(fetch_table('units'))
   store.dispatch<any>(fetch_table('questions'))

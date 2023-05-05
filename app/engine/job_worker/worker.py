@@ -10,6 +10,7 @@ import time
 import sys
 import os
 import traceback
+from pprint import pprint
 
 HOST = os.environ.get('JOB_SERVER_URI') if os.environ.get(
     'JOB_SERVER_URI') else 'server'
@@ -25,8 +26,7 @@ class Worker():
 
     def connect(self):
         time.sleep(5)
-        # self.sock.connect((HOST, PORT))
-        self.sock.connect(('localhost', PORT))
+        self.sock.connect((HOST, PORT))
 
         msg = self.recv()
         print(f'SERVER: {msg["msg"]}')
@@ -81,6 +81,7 @@ class Worker():
                         job['results'] = obj
                         job['results']['runtime'] = runtime*1000
                         job['status'] = 'exit'
+                        job['exit_status'] = 0
                         print(f'ENGINE: Completed job {job_count}')
                     except Exception as e:
                         tb_str = traceback.format_exc()
@@ -88,9 +89,10 @@ class Worker():
                         job['err'] = str(out)
                         job['exception'] = str(tb_str)
                         job['results'] = {}
+                        job['status'] = 'exit'
                         job['exit_status'] = 1
-                        job['test cases'] = c['test cases']
                         print(f'ENGINE: Failed job - exception: {tb_str}')
+                    pprint(job)
                     self.send({'type': 'job', 'payload': job})
                 self.send({'type': 'status', 'payload': 'idle'})
             except Exception as e:

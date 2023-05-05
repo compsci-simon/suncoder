@@ -21,7 +21,8 @@ export const fetch_table = (() => {
           callback()
         }
       } catch (error) {
-        console.log(error)
+        delete executed[table]
+        console.log(`deleted ${table}`)
         dispatch({ type: `[GET:ERROR] ${error}` })
       }
     } else if (callback) {
@@ -61,6 +62,7 @@ export const get_user = (() => {
         const { data } = await fastapi.user.get_id()
         dispatch({ type: 'SIGN_IN', payload: data })
       } catch (error) {
+        executed = false
         dispatch({ type: 'ERROR GETTING ID' })
       }
     }

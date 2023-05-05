@@ -113,7 +113,7 @@ def job_status(job_id: str, user: types.User = Depends()):
     job = apiClient.recv()
     with open('job_results.json', 'w') as f:
         f.write(json.dumps(job))
-    if job['status'] == 'exit' and job['exit_status'] == 0:
+    if job['status'] == 'exit':
         passed = 0
         for val in job['results']['tests'].values():
             if val['Pass']:
@@ -147,12 +147,7 @@ def job_status(job_id: str, user: types.User = Depends()):
             'unit_id': job['unit_id'],
             'course_id': job['course_id']
         }
-    else:
-        total = len(job['results']['tests'].keys())
-        job['results']['cases_passed'] = 0
-        job['results']['total_cases'] = total
-        job['results']['cases_failed'] = total
-        return job
+    return job
 
 
 @app.post('/api/v1/authenticate')

@@ -158,14 +158,6 @@ const App = () => {
 								/>
 							</React.Fragment>
 						) : (
-							// <div
-							//   className='w-100 h-100 position-relative'
-							// >
-							//   <img
-							//     className='m-auto fixed-bottom h-100 position-absolute'
-							//     src='./assets/denied.svg'
-							//   />
-							// </div>
 							<Login />
 						)}
 					</Bar>

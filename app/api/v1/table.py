@@ -29,6 +29,8 @@ async def get_table(table: str, user: types.User = Depends(), extra_args=None):
                     and row.id != user.id:
                 continue
             newTable.append(row)
+    else:
+        newTable = table
     return newTable
 
 

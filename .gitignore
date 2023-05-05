@@ -39,3 +39,6 @@ suncoder/coverage/
 deployment/
 
 testing/
+
+front-end/default.conf
+front-end/db.sql
