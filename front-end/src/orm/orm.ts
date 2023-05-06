@@ -720,11 +720,11 @@ const question_charts = (state: RootState, question_id: string) => {
     for (let idx = 1; idx < changes.length; idx++) {
       let change = changes[idx]
       if (change.text.length > 30) {
-        info.suspicious_points.push({ id: crypto.randomUUID(), user_code_id: user_code.ref.id, idx, severity: 'high' })
+        info.suspicious_points.push({ id: random_uuid(), user_code_id: user_code.ref.id, idx, severity: 'high' })
       } else if (change.text.length > 20) {
-        info.suspicious_points.push({ id: crypto.randomUUID(), user_code_id: user_code.ref.id, idx, severity: 'medium' })
+        info.suspicious_points.push({ id: random_uuid(), user_code_id: user_code.ref.id, idx, severity: 'medium' })
       } else if (change.text.length > 10) {
-        info.suspicious_points.push({ id: crypto.randomUUID(), user_code_id: user_code.ref.id, idx, severity: 'low' })
+        info.suspicious_points.push({ id: random_uuid(), user_code_id: user_code.ref.id, idx, severity: 'low' })
       }
     }
   }
