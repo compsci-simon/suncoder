@@ -13,7 +13,8 @@ class User:
         token = token.split(' ')[1]
         decoded = jwt.decode(token, options={"verify_signature": False})
         username = decoded['username']
-        user = main.database.get_user(username=username)
+        id = decoded['id']
+        user = main.database.get_user(id=id)
         self.username = username
         self.type = user.type if user else None
         self.id = user.id if user else None

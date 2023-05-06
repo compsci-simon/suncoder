@@ -71,14 +71,14 @@ const CourseNav = (props: any) => {
   useEffect(() => {
     let opens: boolean[] = [];
     for (let i = 0; i < props.courses.length; i++) {
-      opens.push(false);
+      opens.push(true);
     }
     setOpen(opens);
   }, []);
 
   const coursesComponent = () => {
     if (!props.courses) {
-      return null;
+      return <h3>You have not registered for any courses yet.</h3>;
     }
     return props.courses.map((c: any, index: number) => {
       const units = Object.values(c.units);

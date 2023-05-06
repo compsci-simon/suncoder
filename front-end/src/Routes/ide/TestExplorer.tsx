@@ -108,6 +108,7 @@ const TestExplorer = ({ results, select_tree_item }: testExplorerProps) => {
       </TreeView>
     );
   }
+
   return (
     <div style={{ minWidth: "200px" }} className="overflow-box">
       <span className="p-2" style={{ color: "rgba(0, 0, 0, 0.6)" }}>

@@ -619,8 +619,11 @@ const user_attempts_for_question = (state: RootState, question_id: string) => {
     let user_codes: any[] = []
     for (let db_user_code of db_question.user_code.toModelArray()) {
       let user_code = JSON.parse(JSON.stringify(db_user_code.ref))
-      user_code['username'] = db_user_code.user_id.ref.username
-      user_code['user_id'] = db_user_code.user_id.ref.id
+      if (!db_user_code.user_id) {
+        continue
+      }
+      user_code['username'] = db_user_code.user_id?.ref.username
+      user_code['user_id'] = db_user_code.user_id?.ref.id
       if (user_code['username'] == 'demo' && user_code['user_id'] != id) {
         continue
       }

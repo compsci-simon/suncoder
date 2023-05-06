@@ -265,10 +265,11 @@ class Crud:
                         username='demo',
                         password='12345678',
                         type='lecturer')
+            session.add(user)
+            session.commit()
             for course in session.query(Course).all():
                 if len(course.prerequisites) == 0:
                     user.enrolled_courses.append(course)
-            session.add(user)
             session.commit()
 
             return {'id': user.id, 'username': 'demo', 'type': 'lecturer'}
@@ -302,11 +303,11 @@ class Crud:
                 return {'id': user.id, 'username': username, 'type': user.type}
             
 
-    def get_user(self, username: str) -> User:
+    def get_user(self, id: str) -> User:
         '''This method is used to get a user given as username. It is used within dependency injection to inject the user and especially the type of user when securing routes'''
         with Session(self.engine) as session:
             try:
-                return session.query(User).filter(User.username == username).first()
+                return session.query(User).filter_by(id=id).first()
             except Exception:
                 return None
 

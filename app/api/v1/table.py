@@ -19,19 +19,19 @@ async def create_object(tablename: str, items: list):
 
 @router.get('/tables')
 async def get_table(table: str, user: types.User = Depends(), extra_args=None):
-    table = main.database.get_table(table, extra_args)
-    newTable = []
+    rows = main.database.get_table(table, extra_args)
+    newRows = []
     if user.username == 'demo':
-        for row in table:
+        for row in rows:
             if hasattr(row, 'username') \
                     and row.username == 'demo' \
                     and hasattr(row, 'id') \
                     and row.id != user.id:
                 continue
-            newTable.append(row)
+            newRows.append(row)
     else:
-        newTable = table
-    return newTable
+        newRows = rows
+    return newRows
 
 
 # -------------------------------- UPDATE -------------------------------------
